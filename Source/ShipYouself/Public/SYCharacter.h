@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "SYCharacter.generated.h"
 
+class UInputAction;
+struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputMappingContext;
@@ -30,13 +32,27 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputMappingContext* InputMapping;
+	
+	// Movement Actions
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input")
+	UInputAction* MoveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input")
+	UInputAction* LookAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input")
+	UInputAction* JumpAction;
+	
+	// Movement Functions
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	//void Crouch(const FInputActionValue& Value);
+
+public:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, Category="Input")
-	UInputMappingContext* InputMapping;
+	
 };
