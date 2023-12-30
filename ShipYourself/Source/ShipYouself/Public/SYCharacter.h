@@ -22,7 +22,6 @@ public:
 	ASYCharacter();
 
 protected:
-
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
@@ -44,15 +43,25 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input")
 	UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Input")
+	UInputAction* ToggleCrouchAction;
 	
 	// Movement Functions
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	//void Crouch(const FInputActionValue& Value);
+	void CrouchChar(const FInputActionValue& Value);
+
+	// Animations
+	UPROPERTY(EditAnywhere, Category = "Anim")
+	UAnimMontage* StandAnim;
 
 public:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	bool bCheckIfCrouched;
 
 	
 };

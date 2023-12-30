@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Animation/AnimMontage.h"
 
 // Sets default values
 ASYCharacter::ASYCharacter()
@@ -22,8 +23,11 @@ ASYCharacter::ASYCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+	GetCharacterMovement()->GravityScale = 2.0f;
 
 	bUseControllerRotationYaw = false;
+	
 	
 }
 
@@ -31,7 +35,9 @@ ASYCharacter::ASYCharacter()
 void ASYCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	Crouch();
+	
 	// Set up the input mapping context system
 	if(const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
@@ -40,7 +46,8 @@ void ASYCharacter::BeginPlay()
 			InputSystem->AddMappingContext(InputMapping, 0);
 		}
 	}
-	
+
+	UE_LOG(LogTemp, Warning, TEXT("Crouch: %d"), bIsCrouched);
 }
 
 void ASYCharacter::Move(const FInputActionValue& Value)
@@ -72,6 +79,22 @@ void ASYCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void ASYCharacter::CrouchChar(const FInputActionValue& Value)
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+		PlayAnimMontage(StandAnim);
+	}
+	else
+	{
+		Crouch();
+		//PlayAnimMontage(StandAnim, -1.0f);
+	}
+		
+	UE_LOG(LogTemp, Warning, TEXT("Crouch: %d"), bIsCrouched);
+}
+
 // Called to bind functionality to input
 void ASYCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -82,6 +105,7 @@ void ASYCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(MoveAction , ETriggerEvent::Triggered, this, &ASYCharacter::Move);
 		Input->BindAction(LookAction , ETriggerEvent::Triggered, this, &ASYCharacter::Look);
 		Input->BindAction(JumpAction , ETriggerEvent::Triggered, this, &ASYCharacter::Jump);
+		Input->BindAction(ToggleCrouchAction , ETriggerEvent::Triggered, this, &ASYCharacter::CrouchChar);
 		
 	}
 
