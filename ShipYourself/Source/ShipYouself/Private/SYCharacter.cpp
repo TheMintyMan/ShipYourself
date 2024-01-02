@@ -25,9 +25,17 @@ ASYCharacter::ASYCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	GetCharacterMovement()->GravityScale = 2.0f;
+	GetCharacterMovement()->Crouch();
 
 	bUseControllerRotationYaw = false;
 	
+	
+	
+}
+
+void ASYCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 	
 }
 
@@ -35,8 +43,8 @@ ASYCharacter::ASYCharacter()
 void ASYCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	Crouch();
+	
 	
 	// Set up the input mapping context system
 	if(const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
@@ -84,12 +92,10 @@ void ASYCharacter::CrouchChar(const FInputActionValue& Value)
 	if (bIsCrouched)
 	{
 		UnCrouch();
-		PlayAnimMontage(StandAnim);
 	}
 	else
 	{
 		Crouch();
-		//PlayAnimMontage(StandAnim, -1.0f);
 	}
 		
 	UE_LOG(LogTemp, Warning, TEXT("Crouch: %d"), bIsCrouched);
@@ -110,3 +116,4 @@ void ASYCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	}
 
 }
+

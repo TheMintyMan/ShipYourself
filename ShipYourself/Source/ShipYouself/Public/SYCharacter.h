@@ -53,12 +53,12 @@ protected:
 	void CrouchChar(const FInputActionValue& Value);
 
 	// Animations
-	UPROPERTY(EditAnywhere, Category = "Anim")
-	UAnimMontage* StandAnim;
 
 public:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void PostInitializeComponents() override;
 
 private:
 	bool bCheckIfCrouched;
