@@ -28,6 +28,7 @@ ASYCharacter::ASYCharacter()
 	GetCharacterMovement()->Crouch();
 
 	bUseControllerRotationYaw = false;
+
 	
 	
 	
