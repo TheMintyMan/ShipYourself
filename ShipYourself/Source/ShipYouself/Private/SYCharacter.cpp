@@ -23,7 +23,7 @@ ASYCharacter::ASYCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 200.0f;
 	GetCharacterMovement()->GravityScale = 2.0f;
 	GetCharacterMovement()->Crouch();
 
